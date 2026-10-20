@@ -1,0 +1,24 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true, args: ['--use-angle=default','--enable-unsafe-swiftshader'] });
+const p = await b.newPage({ viewport: { width: 1000, height: 700 } });
+p.on('pageerror', e => console.log('ERR', e.message));
+await p.goto('http://127.0.0.1:5178/index.html', { waitUntil: 'load' });
+await p.waitForTimeout(1500);
+const res = await p.evaluate(async () => {
+  const F = await import('/src/foliage.js');
+  document.body.innerHTML = '';
+  document.body.style.background = '#3a4a35';
+  const c1 = F.firBranch(3, { sprigs: 3, twigs: 9, light: 30 });
+  c1.style.cssText = 'width:330px;height:330px;background:#4a5a44;display:inline-block';
+  const c2 = F.leafCluster(31, 94);
+  c2.style.cssText = 'width:330px;height:330px;background:#4a5a44;display:inline-block';
+  const c3 = F.fernCluster(91);
+  c3.style.cssText = 'width:330px;height:330px;background:#4a5a44;display:inline-block';
+  const c4 = F.grassTuft(77);
+  c4.style.cssText = 'width:330px;height:330px;background:#4a5a44;display:inline-block';
+  document.body.append(c1, c2, c3, c4);
+  return 'ok';
+});
+await p.waitForTimeout(600);
+await p.screenshot({ path: 'test/foliage.png' });
+await b.close();

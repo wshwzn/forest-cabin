@@ -1,0 +1,10 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true, args: ['--use-angle=default','--enable-unsafe-swiftshader','--ignore-gpu-blocklist'] });
+const p = await b.newPage({ viewport: { width: 1400, height: 800 } });
+p.on('pageerror', e => console.log('ERR', e.message));
+await p.goto('http://127.0.0.1:5178/index.html?still=1&autostart=1&cam=8.6,2.35,12.2&look=0.05,2.45,1.1&fov=36', { waitUntil: 'load' });
+await p.waitForFunction(() => window.__cabin && window.__cabin.ready(), { timeout: 120000 });
+await p.waitForFunction(() => getComputedStyle(document.getElementById('loader')).opacity === '0', { timeout: 60000 });
+await p.waitForTimeout(2500);
+await p.screenshot({ path: 'test/cabin_front.png' });
+await b.close();

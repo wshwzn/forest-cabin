@@ -1,0 +1,18 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true, args: ['--use-angle=default','--enable-unsafe-swiftshader','--autoplay-policy=no-user-gesture-required'] });
+const p = await b.newPage({ viewport: { width: 1200, height: 700 } });
+const errs = [];
+p.on('pageerror', e => errs.push('ERR ' + e.message));
+await p.goto('http://127.0.0.1:5178/index.html', { waitUntil: 'load' });
+await p.waitForTimeout(2000);
+await p.click('#btn-enter');
+await p.waitForTimeout(4000);
+const a1 = await p.evaluate(() => window.__cabin.audioState());
+await p.click('#btn-sound');
+await p.waitForTimeout(800);
+const a2 = await p.evaluate(() => window.__cabin.audioState());
+await p.click('#btn-sound');
+await p.waitForTimeout(800);
+const a3 = await p.evaluate(() => window.__cabin.audioState());
+console.log(JSON.stringify({ a1, a2, a3, errs }));
+await b.close();

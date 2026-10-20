@@ -1,0 +1,23 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true, args: ['--use-angle=default','--enable-unsafe-swiftshader'] });
+const p = await b.newPage({ viewport: { width: 900, height: 500 } });
+p.on('pageerror', e => console.log('ERR', e.message));
+await p.goto('http://127.0.0.1:5178/index.html', { waitUntil: 'load' });
+await p.waitForTimeout(1500);
+const res = await p.evaluate(async () => {
+  const T = await import('/src/textures.js');
+  const c1 = T.woodPlanks({ w: 512, h: 512, planks: 4, base: [26, 24, 42], vary: 10, seed: 8, mossy: false });
+  const ctx = c1.getContext('2d');
+  const d = ctx.getImageData(100, 100, 1, 1).data;
+  const d2 = ctx.getImageData(300, 300, 1, 1).data;
+  const c2 = T.shingleTexture(21, [24,16,26]);
+  const d3 = c2.getContext('2d').getImageData(100,100,1,1).data;
+  document.body.innerHTML = '';
+  document.body.style.background = '#111';
+  c1.style.cssText = 'width:440px;height:440px;image-rendering:auto';
+  document.body.appendChild(c1);
+  return { px1: [...d], px2: [...d2], shingle: [...d3] };
+});
+console.log(JSON.stringify(res));
+await p.screenshot({ path: 'test/tex.png' });
+await b.close();

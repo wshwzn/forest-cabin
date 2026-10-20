@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>林间木屋 · A Cabin in the Woods</title>
+  <meta name="description" content="森林深处的一座乡村木屋：黄昏、炊烟、暖灯与雾气。实时 3D 电影感场景。" />
+  <meta name="theme-color" content="#080a08" />
+  <link rel="icon" href="./favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="./favicon.png" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="stage" aria-label="林间木屋 3D 场景"></canvas>
+
+  <div class="letterbox" aria-hidden="true">
+    <i class="bar top"></i>
+    <i class="bar bottom"></i>
+  </div>
+
+  <div class="hud">
+    <header class="masthead">
+      <h1>林间木屋</h1>
+      <p>A CABIN IN THE WOODS <span>·</span> DUSK</p>
+    </header>
+
+    <div class="shot" id="shot">
+      <div class="shot-no" id="shot-no">01 / 06</div>
+      <div class="shot-name">
+        <span id="shot-cn">林间空地</span>
+        <span id="shot-en">THE CLEARING</span>
+      </div>
+    </div>
+
+    <nav class="controls" aria-label="场景控制">
+      <button id="btn-bars" class="active" type="button">宽银幕<kbd>B</kbd></button>
+      <button id="btn-sound" class="active" type="button">环境音<kbd>M</kbd></button>
+      <button id="btn-look" type="button" title="切换拖动方式：抓着画面 / 转动视角">拖动<kbd>V</kbd></button>
+      <button id="btn-full" type="button">全屏<kbd>F</kbd></button>
+    </nav>
+
+    <div class="shot-nav" aria-hidden="true">
+      <button id="btn-prev" type="button" title="上一镜">&#8249;</button>
+      <button id="btn-next" type="button" title="下一镜">&#8250;</button>
+    </div>
+  </div>
+
+  <div class="hint" id="hint">拖动环视 · 滚轮远近 · ← → 切换镜头 · B 宽银幕</div>
+
+  <div id="loader">
+    <div class="loader-grain" aria-hidden="true"></div>
+    <div class="loader-inner">
+      <p class="eyebrow">A REAL-TIME SHORT</p>
+      <h2>林间木屋</h2>
+      <p class="latin">A CABIN IN THE WOODS</p>
+      <div class="progress"><i id="progress-fill"></i></div>
+      <p class="status" id="status">正在唤醒森林…</p>
+      <button id="btn-enter" type="button" disabled>进入林间</button>
+      <p class="footnote">建议开启声音，并全屏观看</p>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

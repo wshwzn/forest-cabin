@@ -1,0 +1,12 @@
+# dependencies
+node_modules/
+
+# local test captures and debug screenshots (large, not part of the site)
+test/
+shots/
+.tmp/
+
+# local tooling output
+*.log
+.DS_Store
+Thumbs.db
